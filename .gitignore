@@ -1,0 +1,81 @@
+# -----------------------------
+# Visual Studio and IDE Files
+# -----------------------------
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vscode/
+.idea/
+
+# -----------------------------
+# Build Artifacts
+# -----------------------------
+bin/
+obj/
+out/
+
+# -----------------------------
+# NuGet and Package Files
+# -----------------------------
+*.nupkg
+*.snupkg
+packages/
+
+# -----------------------------
+# Logs and Test Results
+# -----------------------------
+*.log
+logs/
+LogFiles/
+TestResults/
+*.trx
+
+# -----------------------------
+# Entity Framework Files
+# -----------------------------
+# You might keep migrations in source control. 
+# Uncomment below if you don't want to include EF migrations.
+# Migrations/
+
+# -----------------------------
+# Configuration and Secrets
+# -----------------------------
+# Local configuration and secrets should not be pushed.
+appsettings.*.json
+*.env
+
+# -----------------------------
+# Temporary and Backup Files
+# -----------------------------
+*.tmp
+*.bak
+*.old
+*.orig
+
+# -----------------------------
+# OS-Specific Files
+# -----------------------------
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# -----------------------------
+# Additional Build and Cache Files
+# -----------------------------
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# -----------------------------
+# Optional: Docker and Database Files
+# -----------------------------
+# Uncomment the next line if you're using Docker volumes.
+# volumes/
+# Uncomment if using local databases like SQLite or LocalDB.
+# *.mdf
+# *.ldf
+# *.sqlite
+# *.db
