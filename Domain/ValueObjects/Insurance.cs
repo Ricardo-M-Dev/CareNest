@@ -9,13 +9,13 @@ namespace Domain.ValueObjects
             var (insuranceProvider, insuranceNumber) = Value;
 
             if (string.IsNullOrWhiteSpace(insuranceProvider))
-                throw new ArgumentException("Campo Nome do Convênio não pode ser vazio.", nameof(insuranceProvider));
+                throw new ArgumentException("Nome do Convênio é obrigatório.", nameof(insuranceProvider));
 
             if (insuranceProvider.Length < 3)
                 throw new ArgumentException("Nome do Convênio inválido.", nameof(insuranceProvider));
 
             if (string.IsNullOrWhiteSpace(insuranceNumber))
-                throw new ArgumentException("Campo Número do Convênio não pode ser vazio.", nameof(insuranceNumber));
+                throw new ArgumentException("Número do Convênio é obrigatório.", nameof(insuranceNumber));
 
             if (insuranceNumber.Length < 3)
                 throw new ArgumentException("Número do Convênio inválido.", nameof(insuranceNumber));

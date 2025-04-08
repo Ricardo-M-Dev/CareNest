@@ -11,7 +11,7 @@ namespace Domain.ValueObjects
             var digitsOnly = new string([.. Value.Where(char.IsDigit)]).Trim();
 
             if (string.IsNullOrWhiteSpace(digitsOnly))
-                throw new ArgumentException("Campo CEP não pode ser vazio.", nameof(digitsOnly));
+                throw new ArgumentException("CEP é obrigatório.", nameof(digitsOnly));
             if (digitsOnly.Length < 8)
                 throw new ArgumentException("CEP inválido.", nameof(digitsOnly));
         }

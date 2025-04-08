@@ -12,7 +12,7 @@ namespace Domain.ValueObjects
             var trimmedValue = Value.Trim();
 
             if (string.IsNullOrWhiteSpace(trimmedValue))
-                throw new ArgumentException("Campo Resumo não pode ser vazio.", nameof(trimmedValue));
+                throw new ArgumentException("Resumo é obrigatório.", nameof(trimmedValue));
             if (trimmedValue.Length < 10)
                 throw new ArgumentException("Resumo não pode ter menos de 10 caracteres.", nameof(trimmedValue));
         }

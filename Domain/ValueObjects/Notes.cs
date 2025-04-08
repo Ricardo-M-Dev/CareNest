@@ -11,7 +11,7 @@ namespace Domain.ValueObjects
             var trimmedValue = Value;
 
             if (string.IsNullOrWhiteSpace(trimmedValue))
-                throw new ArgumentException("Campo Observações não pode ser vazio.", nameof(trimmedValue));
+                throw new ArgumentException("Observações é obrigatório.", nameof(trimmedValue));
             if (trimmedValue.Length < 3)
                 throw new ArgumentException("Observações não pode ter menos de 3 caracteres.", nameof(trimmedValue));
         }

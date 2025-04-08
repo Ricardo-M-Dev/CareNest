@@ -9,9 +9,9 @@ namespace Domain.ValueObjects
         protected override void Validate()
         {
             if (string.IsNullOrWhiteSpace(Value))
-                throw new ArgumentException("Campo Nome não pode ser vazio.", nameof(Value));
+                throw new ArgumentException("Nome é obrigatório.", nameof(Value));
             if (Value.Length < 3)
-                throw new ArgumentException("Nome inválido.", nameof(Value));
+                throw new ArgumentException("Nome deve ter pelo menos 3 caracteres.", nameof(Value));
         }
     }
 }

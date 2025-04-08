@@ -13,13 +13,13 @@ namespace Domain.ValueObjects
                 if (!IsValidCpf(digitsOnly))
                     throw new ArgumentException("CPF inválido");
             }
-            else if (digitsOnly.Length == 14)
+            if (digitsOnly.Length == 14)
             {
                 if (!IsValidCnpj(digitsOnly))
                     throw new ArgumentException("CNPJ inválido.");
             }
-            else
-                throw new ArgumentException("Campo Identidade precisa ter 11 (CPF) ou 14 (CNPJ) caracteres.");
+
+            throw new ArgumentException("Identidade precisa ter 11 (CPF) ou 14 (CNPJ) caracteres.");
         }
 
         private static bool IsValidCpf(string cpf)

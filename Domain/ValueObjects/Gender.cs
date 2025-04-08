@@ -10,7 +10,7 @@ namespace Domain.ValueObjects
         protected override void Validate()
         {
             if (string.IsNullOrWhiteSpace(Value))
-                throw new ArgumentException("Campo Gênero não pode ser vazio.", nameof(Value));
+                throw new ArgumentException("Gênero é obrigatório.", nameof(Value));
             if (Value.Length < 1)
                 throw new ArgumentException("Gênero inválido.", nameof(Value));
         }

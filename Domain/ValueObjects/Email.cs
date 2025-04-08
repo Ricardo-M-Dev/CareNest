@@ -9,7 +9,7 @@ namespace Domain.ValueObjects
         protected override void Validate()
         {
             if (string.IsNullOrWhiteSpace(Value))
-                throw new ArgumentException("Campo Email não pode ser vazio.", nameof(Value));
+                throw new ArgumentException("Email é obrigatório.", nameof(Value));
             if (!Value.Contains('@') || !Value.Contains('.'))
                 throw new ArgumentException("Email não possui o formato correto.", nameof(Value));
         }

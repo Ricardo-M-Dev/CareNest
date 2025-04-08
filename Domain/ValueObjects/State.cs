@@ -9,7 +9,7 @@ namespace Domain.ValueObjects
         protected override void Validate()
         {
             if (string.IsNullOrWhiteSpace(Value))
-                throw new ArgumentException("Campo Estado não pode ser vazio.", nameof(Value));
+                throw new ArgumentException("Estado é obrigatório.", nameof(Value));
             if (Value.Length < 2)
                 throw new ArgumentException("Estado inválido.", nameof(Value));
         }

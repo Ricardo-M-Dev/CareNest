@@ -10,7 +10,7 @@ namespace Domain.ValueObjects
         protected override void Validate()
         {
             if (Value == default)
-                throw new ArgumentException("Campo Data de Nascimento não pode ser vazio.", nameof(Value));
+                throw new ArgumentException("Data de Nascimento é obrigatório.", nameof(Value));
             if (Value > DateTime.Now || Value < DateTime.Now.AddYears(-120))
                 throw new ArgumentException("Data de Nascimento inválida.", nameof(Value));
         }

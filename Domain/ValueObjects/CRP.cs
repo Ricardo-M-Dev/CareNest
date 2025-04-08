@@ -11,7 +11,7 @@ namespace Domain.ValueObjects
             var digitsOnly = new string([.. Value.Where(char.IsDigit)]).Trim();
 
             if (string.IsNullOrWhiteSpace(Value))
-                throw new ArgumentException("Campo CRP não pode ser vazio.", nameof(Value));
+                throw new ArgumentException("CRP é obrigatório.", nameof(Value));
             if (Value.Length < 7)
                 throw new ArgumentException("CRP inválido.", nameof(Value));
         }

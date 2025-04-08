@@ -9,9 +9,9 @@ namespace Domain.ValueObjects
         protected override void Validate()
         {
             if (string.IsNullOrWhiteSpace(Value))
-                throw new ArgumentException("Campo Senha não pode ser vazio.", nameof(Value));
+                throw new ArgumentException("Senha é obrigatório.", nameof(Value));
             if (Value.Length < 6)
-                throw new ArgumentException("Senha inválida.", nameof(Value));
+                throw new ArgumentException("Senha deve ter pelo menos 6 caracteres.", nameof(Value));
             if (!Value.Any(char.IsDigit))
                 throw new ArgumentException("Senha deve conter pelo menos um número.", nameof(Value));
             if (!Value.Any(char.IsUpper))
