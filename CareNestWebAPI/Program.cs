@@ -1,14 +1,17 @@
+using Application.Common.Mediator;
+using Application.Patients.Commands;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddSingleton<Mediator>();
+builder.Services.AddTransient<IRequestHandler<CreatePatientCommand, int>, CreatePatientCommandHandler>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
