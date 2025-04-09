@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Domain.ValueObjects;
+using FluentValidation;
 
 namespace Application.Psychologist.Commands
 {
