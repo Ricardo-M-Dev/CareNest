@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace Application.Common
+namespace Application.Common.Results
 {
     public class Result
     {
