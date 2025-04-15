@@ -3,8 +3,10 @@ using Application.Commands.Psychologists;
 using Application.Common.Mediator;
 using Application.Interfaces;
 using Application.Repositories;
+using Infrastructure.Cache;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,12 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddSingleton(new DbConnectionFactory(connectionString));
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IPsychologistRepository, PsychologistRepository>();
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(
+    _ => ConnectionMultiplexer.Connect("localhost:6379")
+);
+
+builder.Services.AddScoped<IRedisCacheService, RedisCacheService>();
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
