@@ -1,7 +1,7 @@
 ﻿using Domain.ValueObjects;
 using FluentValidation;
 
-namespace Application.Psychologist.Commands
+namespace Application.Commands.Psychologists
 {
     public class CreatePsychologistCommandValidator : AbstractValidator<CreatePsychologistCommand>
     {

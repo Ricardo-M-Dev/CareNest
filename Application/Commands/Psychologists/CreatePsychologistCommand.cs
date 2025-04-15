@@ -1,8 +1,10 @@
 ﻿using Application.Common.Mediator;
+using Domain.Entities;
+using Domain.ValueObjects;
 
-namespace Application.Patients.Commands
+namespace Application.Commands.Psychologists
 {
-    public class CreatePatientCommand : IRequest<int>
+    public class CreatePsychologistCommand : IRequest<int>
     {
         public string FullName { get; set; } = default!;
         public string Email { get; set; } = default!;
@@ -17,10 +19,9 @@ namespace Application.Patients.Commands
         public string ZipCode { get; set; } = default!;
         public string Country { get; set; } = default!;
         public bool IsActive { get; set; } = default!;
-        public string? EmergencyContactName { get; set; }
-        public string? EmergencyContactPhone { get; set; }
-        public string? InsuranceProvider { get; set; }
-        public string? InsuranceNumber { get; set; }
-        public bool IsUnderTreatment { get; set; }
+        public string? CRP { get; set; }
+        public string? Specialization { get; set; }
+        public string? Bio { get; set; }
+        public bool IsAvailable { get; set; }
     }
 }

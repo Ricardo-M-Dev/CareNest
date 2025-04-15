@@ -1,6 +1,6 @@
 ﻿using Application.Common.Mediator;
 
-namespace Application.Patients.Commands
+namespace Application.Commands.Patients
 {
     public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand, int>
     {

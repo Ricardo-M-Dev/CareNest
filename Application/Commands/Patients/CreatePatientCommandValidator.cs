@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Domain.ValueObjects;
 
-namespace Application.Patients.Commands
+namespace Application.Commands.Patients
 {
     public class CreatePatientCommandValidator : AbstractValidator<CreatePatientCommand>
     {

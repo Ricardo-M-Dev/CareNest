@@ -1,6 +1,6 @@
 ﻿using Application.Common.Mediator;
 
-namespace Application.Psychologist.Commands
+namespace Application.Commands.Psychologists
 {
     public class CreatePsychologistCommandHandler : IRequestHandler<CreatePsychologistCommand, int>
     {
