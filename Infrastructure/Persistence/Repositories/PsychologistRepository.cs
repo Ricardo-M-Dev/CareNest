@@ -1,65 +1,58 @@
 ﻿using Application.Interfaces;
 using Dapper;
 using Domain.Entities;
+using System.Data;
 
 namespace Infrastructure.Persistence.Repositories
 {
     public class PsychologistRepository : IPsychologistRepository
     {
-        private readonly DbConnectionFactory _connectionFactory;
+        private readonly IDbConnection _connection;
+        private readonly IDbTransaction _transaction; // A ser usado em caso de integração com outras entidades
 
-        public PsychologistRepository(DbConnectionFactory connectionFactory)
+        public PsychologistRepository(IDbConnection connection, IDbTransaction transation)
         {
-            _connectionFactory = connectionFactory;
+            _connection = connection;
+            _transaction = transation;
         }
         public Task AddAsync(Psychologist entity)
         {
-            using var connection = _connectionFactory.CreateConnection();
-
             var query = @"
                 INSERT INTO Psychologists 
                     (FirstName, LastName, Email, DateOfBirth) 
                 VALUES 
                     (@FirstName, @LastName, @Email, @DateOfBirth);";
 
-            return connection.ExecuteAsync(query, entity);
+            return _connection.ExecuteAsync(query, entity);
         }
 
         public Task AddRangeAsync(IEnumerable<Psychologist> entities)
         {
-            using var connection = _connectionFactory.CreateConnection();
-
             var query = @"
                 INSERT INTO Psychologists 
                     (FirstName, LastName, Email, DateOfBirth) 
                 VALUES 
                     (@FirstName, @LastName, @Email, @DateOfBirth);";
 
-            return connection.ExecuteAsync(query, entities);
+            return _connection.ExecuteAsync(query, entities);
         }
 
         public Task<IEnumerable<Psychologist>> GetAllAsync()
         {
-            using var connection = _connectionFactory.CreateConnection();
-
             var query = "SELECT * FROM Psychologists";
 
-            return connection.QueryAsync<Psychologist>(query);
+            return _connection.QueryAsync<Psychologist>(query);
         }
 
         public Task<Psychologist?> GetByIdAsync(int id)
         {
-            using var connection = _connectionFactory.CreateConnection();
-
             var query = "SELECT * FROM Psychologists WHERE Id = @Id";
 
-            return connection.QueryFirstOrDefaultAsync<Psychologist>(query, new { Id = id });
+            return _connection.QueryFirstOrDefaultAsync<Psychologist>(query, new { Id = id });
         }
 
         public Task UpdateAsync(Psychologist entity)
         {
-            using var connection = _connectionFactory.CreateConnection();
-
             var query = @"
                 UPDATE Psychologists 
                 SET 
@@ -69,16 +62,14 @@ namespace Infrastructure.Persistence.Repositories
                     DateOfBirth = @DateOfBirth 
                 WHERE Id = @Id;";
 
-            return connection.ExecuteAsync(query, entity);
+            return _connection.ExecuteAsync(query, entity);
         }
 
         public Task DeleteAsync(int id)
         {
-            using var connection = _connectionFactory.CreateConnection();
-
             var query = "DELETE FROM Psychologists WHERE Id = @Id;";
 
-            return connection.ExecuteAsync(query, new { Id = id });
+            return _connection.ExecuteAsync(query, new { Id = id });
         }
     }
 }

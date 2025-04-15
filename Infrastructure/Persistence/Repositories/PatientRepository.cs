@@ -1,66 +1,58 @@
 ﻿using Dapper;
-using Infrastructure.Persistence;
 using Application.Interfaces;
 using Domain.Entities;
+using System.Data;
 
 namespace Application.Repositories
 {
     public class PatientRepository : IPatientRepository
     {
-        private readonly DbConnectionFactory _connectionFactory;
+        private readonly IDbConnection _connection;
+        private readonly IDbTransaction _transaction; // A ser usado em caso de integração com outras entidades
 
-        public PatientRepository(DbConnectionFactory connectionFactory)
+        public PatientRepository(IDbConnection connection, IDbTransaction transation)
         {
-            _connectionFactory = connectionFactory;
+            _connection = connection;
+            _transaction = transation;
         }
 
         public async Task AddAsync(Patient patient)
         {
-            using var connection = _connectionFactory.CreateConnection();
-
             var query = @"
                 INSERT INTO Patients 
                     (FirstName, LastName, Email, DateOfBirth) 
                 VALUES 
                     (@FirstName, @LastName, @Email, @DateOfBirth);";
 
-            await connection.ExecuteAsync(query, patient);
+            await _connection.ExecuteAsync(query, patient);
         }
 
         public Task AddRangeAsync(IEnumerable<Patient> entities)
         {
-            using var connection = _connectionFactory.CreateConnection();
-
             var query = @"
                 INSERT INTO Patients 
                     (FirstName, LastName, Email, DateOfBirth) 
                 VALUES 
                     (@FirstName, @LastName, @Email, @DateOfBirth);";
 
-            return connection.ExecuteAsync(query, entities);
+            return _connection.ExecuteAsync(query, entities);
         }
 
         public Task<IEnumerable<Patient>> GetAllAsync()
         {
-            using var connection = _connectionFactory.CreateConnection();
-
             var query = "SELECT * FROM Patients";
-            return connection.QueryAsync<Patient>(query);
+            return _connection.QueryAsync<Patient>(query);
         }
 
         public Task<Patient?> GetByIdAsync(int id)
         {
-            using var connection = _connectionFactory.CreateConnection();
-
             var query = "SELECT * FROM Patients WHERE Id = @Id";
 
-            return connection.QueryFirstOrDefaultAsync<Patient>(query, new { Id = id });
+            return _connection.QueryFirstOrDefaultAsync<Patient>(query, new { Id = id });
         }
 
         public Task UpdateAsync(Patient entity)
         {
-            using var connection = _connectionFactory.CreateConnection();
-
             var query = @"
                 UPDATE Patients 
                 SET 
@@ -70,16 +62,15 @@ namespace Application.Repositories
                     DateOfBirth = @DateOfBirth 
                 WHERE Id = @Id;";
 
-            return connection.ExecuteAsync(query, entity);
+            return _connection.ExecuteAsync(query, entity);
         }
 
         public Task DeleteAsync(int id)
         {
-            using var connection = _connectionFactory.CreateConnection();
-
+            
             var query = "DELETE FROM Patients WHERE Id = @Id";
 
-            return connection.ExecuteAsync(query, new { Id = id });
+            return _connection.ExecuteAsync(query, new { Id = id });
         }
     }
 }
