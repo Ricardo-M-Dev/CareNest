@@ -1,7 +1,7 @@
 ﻿using Dapper;
-using Application.Interfaces;
 using Domain.Entities;
 using System.Data;
+using Application.Interfaces.Repositories;
 
 namespace Application.Repositories
 {
@@ -16,7 +16,7 @@ namespace Application.Repositories
             _transaction = transation;
         }
 
-        public async Task AddAsync(Patient patient)
+        public async Task<int> AddAsync(Patient entity)
         {
             var query = @"
                 INSERT INTO Patients 
@@ -24,34 +24,26 @@ namespace Application.Repositories
                 VALUES 
                     (@FirstName, @LastName, @Email, @DateOfBirth);";
 
-            await _connection.ExecuteAsync(query, patient);
+            return Convert.ToInt32(await _connection.ExecuteScalarAsync(query, entity));
         }
 
-        public Task AddRangeAsync(IEnumerable<Patient> entities)
-        {
-            var query = @"
-                INSERT INTO Patients 
-                    (FirstName, LastName, Email, DateOfBirth) 
-                VALUES 
-                    (@FirstName, @LastName, @Email, @DateOfBirth);";
-
-            return _connection.ExecuteAsync(query, entities);
-        }
-
-        public Task<IEnumerable<Patient>> GetAllAsync()
-        {
-            var query = "SELECT * FROM Patients";
-            return _connection.QueryAsync<Patient>(query);
-        }
-
-        public Task<Patient?> GetByIdAsync(int id)
+        public async Task<Patient?> GetByIdAsync(int id)
         {
             var query = "SELECT * FROM Patients WHERE Id = @Id";
 
-            return _connection.QueryFirstOrDefaultAsync<Patient>(query, new { Id = id });
+            return await _connection.QueryFirstOrDefaultAsync<Patient>(query, new { Id = id });
         }
 
-        public Task UpdateAsync(Patient entity)
+        public async Task<List<Patient?>> GetAllAsync()
+        {
+            var query = "SELECT * FROM Patients";
+
+            var result = await _connection.QueryAsync<Patient?>(query);
+
+            return result.ToList();
+        }
+
+        public async Task<int> UpdateAsync(Patient entity)
         {
             var query = @"
                 UPDATE Patients 
@@ -62,15 +54,17 @@ namespace Application.Repositories
                     DateOfBirth = @DateOfBirth 
                 WHERE Id = @Id;";
 
-            return _connection.ExecuteAsync(query, entity);
+            return Convert.ToInt32(await _connection.ExecuteScalarAsync(query, entity));
         }
 
-        public Task DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            
             var query = "DELETE FROM Patients WHERE Id = @Id";
 
-            return _connection.ExecuteAsync(query, new { Id = id });
+            if (await _connection.ExecuteAsync(query, new { Id = id }) == 0)
+                return false;
+
+            return true;
         }
     }
 }
