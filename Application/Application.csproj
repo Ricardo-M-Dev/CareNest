@@ -8,14 +8,8 @@
 
   <ItemGroup>
     <Compile Remove="DTOs\**" />
-    <Compile Remove="Queries\**" />
-    <Compile Remove="Services\**" />
     <EmbeddedResource Remove="DTOs\**" />
-    <EmbeddedResource Remove="Queries\**" />
-    <EmbeddedResource Remove="Services\**" />
     <None Remove="DTOs\**" />
-    <None Remove="Queries\**" />
-    <None Remove="Services\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +21,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Queries\" />
   </ItemGroup>
 
 </Project>
