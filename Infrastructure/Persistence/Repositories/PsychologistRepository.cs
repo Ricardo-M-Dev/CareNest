@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Interfaces.Repositories;
 using Dapper;
 using Domain.Entities;
 using System.Data;
@@ -15,7 +15,7 @@ namespace Infrastructure.Persistence.Repositories
             _connection = connection;
             _transaction = transation;
         }
-        public Task AddAsync(Psychologist entity)
+        public async Task<int> AddAsync(Psychologist entity)
         {
             var query = @"
                 INSERT INTO Psychologists 
@@ -23,35 +23,26 @@ namespace Infrastructure.Persistence.Repositories
                 VALUES 
                     (@FirstName, @LastName, @Email, @DateOfBirth);";
 
-            return _connection.ExecuteAsync(query, entity);
+            return Convert.ToInt32(await _connection.ExecuteScalarAsync(query, entity));
         }
 
-        public Task AddRangeAsync(IEnumerable<Psychologist> entities)
-        {
-            var query = @"
-                INSERT INTO Psychologists 
-                    (FirstName, LastName, Email, DateOfBirth) 
-                VALUES 
-                    (@FirstName, @LastName, @Email, @DateOfBirth);";
-
-            return _connection.ExecuteAsync(query, entities);
-        }
-
-        public Task<IEnumerable<Psychologist>> GetAllAsync()
-        {
-            var query = "SELECT * FROM Psychologists";
-
-            return _connection.QueryAsync<Psychologist>(query);
-        }
-
-        public Task<Psychologist?> GetByIdAsync(int id)
+        public async Task<Psychologist?> GetByIdAsync(int id)
         {
             var query = "SELECT * FROM Psychologists WHERE Id = @Id";
 
-            return _connection.QueryFirstOrDefaultAsync<Psychologist>(query, new { Id = id });
+            return await _connection.QueryFirstOrDefaultAsync<Psychologist>(query, new { Id = id });
         }
 
-        public Task UpdateAsync(Psychologist entity)
+        public async Task<List<Psychologist?>> GetAllAsync()
+        {
+            var query = "SELECT * FROM Psychologists";
+
+            var result = await _connection.QueryAsync<Psychologist?>(query);
+
+            return result.ToList();
+        }
+
+        public async Task<int> UpdateAsync(Psychologist entity)
         {
             var query = @"
                 UPDATE Psychologists 
@@ -62,14 +53,17 @@ namespace Infrastructure.Persistence.Repositories
                     DateOfBirth = @DateOfBirth 
                 WHERE Id = @Id;";
 
-            return _connection.ExecuteAsync(query, entity);
+            return Convert.ToInt32(await _connection.ExecuteScalarAsync(query, entity));
         }
 
-        public Task DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
             var query = "DELETE FROM Psychologists WHERE Id = @Id;";
 
-            return _connection.ExecuteAsync(query, new { Id = id });
+            if (await _connection.ExecuteAsync(query, new { Id = id }) == 0)
+                return false;
+
+            return true;
         }
     }
 }
