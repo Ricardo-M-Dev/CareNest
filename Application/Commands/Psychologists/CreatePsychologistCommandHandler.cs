@@ -4,7 +4,7 @@ namespace Application.Commands.Psychologists
 {
     public class CreatePsychologistCommandHandler : IRequestHandler<CreatePsychologistCommand, int>
     {
-        public int Handle(CreatePsychologistCommand command)
+        public async Task<int> Handle(CreatePsychologistCommand command)
         {
             throw new NotImplementedException();
         }
