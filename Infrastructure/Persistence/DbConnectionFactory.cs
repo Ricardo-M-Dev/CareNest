@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using MySqlConnector;
 using System.Data;
 
 namespace Infrastructure.Persistence
@@ -12,6 +12,11 @@ namespace Infrastructure.Persistence
             _connectionString = connectionString;
         }
 
-        public IDbConnection CreateConnection() => new SqliteConnection(_connectionString);
+        public IDbConnection CreateConnection()
+        {
+            var connection = new MySqlConnection(_connectionString);
+            connection.Open();
+            return connection;
+        }
     }
 }
