@@ -8,6 +8,8 @@ namespace Domain.Entities
         public Insurance? Insurance { get; private set; }
         public bool IsUnderTreatment { get; private set; }
 
+        public Patient() { }
+
         public Patient(
             FullName fullName,
             Email email,
@@ -32,5 +34,4 @@ namespace Domain.Entities
             IsUnderTreatment = isUnderTreatment;
         }
     }
-
 }

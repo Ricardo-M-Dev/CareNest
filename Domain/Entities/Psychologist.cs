@@ -4,13 +4,15 @@ namespace Domain.Entities
 {
     public class Psychologist : Person
     {
-        public CRP CRP { get; private set; }
-        public string Specialization { get; private set; }
-        public List<Patient> Patients { get; private set; }
-        public string Bio { get; private set; }
+        public CRP? CRP { get; private set; }
+        public string? Specialization { get; private set; }
+        public List<Patient>? Patients { get; private set; }
+        public string? Bio { get; private set; }
         public bool IsAvailable { get; private set; }
 
-        public Psychologist(
+        protected Psychologist() { }
+
+        protected Psychologist(
             FullName fullName,
             Email email,
             Password password,
