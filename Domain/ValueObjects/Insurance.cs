@@ -4,6 +4,10 @@ namespace Domain.ValueObjects
 {
     public class Insurance : ValueOf<(string InsuranceProvider, string InsuranceNumber), Insurance>
     {
+        public static implicit operator (string InsuranceProvider, string InsuranceNumber)(Insurance contact) => contact.Value;
+
+        public static implicit operator Insurance((string InsuranceProvider, string InsuranceNumber) value) => From(value);
+
         protected override void Validate()
         {
             var (insuranceProvider, insuranceNumber) = Value;

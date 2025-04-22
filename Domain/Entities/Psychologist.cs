@@ -10,9 +10,9 @@ namespace Domain.Entities
         public string? Bio { get; private set; }
         public bool IsAvailable { get; private set; }
 
-        protected Psychologist() { }
+        public Psychologist() { }
 
-        protected Psychologist(
+        public Psychologist(
             FullName fullName,
             Email email,
             Password password,
@@ -28,7 +28,7 @@ namespace Domain.Entities
             bool isActive,
             CRP crp,
             string specialization,
-            List<Patient> patients,
+            List<Patient>? patients,
             string bio,
             bool isAvailable)
             : base(fullName, email, password, identity, dateOfBirth, gender, phone, address, city, state, zipCode, country, isActive)
@@ -40,5 +40,4 @@ namespace Domain.Entities
             IsAvailable = isAvailable;
         }
     }
-
 }

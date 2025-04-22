@@ -6,7 +6,7 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
         public FullName? FullName { get; set; }
-        public Email? Email { get; private set; }
+        public Email? Email { get; set; }
         public Password? Password { get; set; }
         public Identity? Identity { get; set; }
         public DateOfBirth? DateOfBirth { get; set; }

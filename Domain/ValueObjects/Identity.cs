@@ -4,6 +4,9 @@ namespace Domain.ValueObjects
 {
     public class Identity : ValueOf<string, Identity>
     {
+        public static implicit operator string(Identity identity) => identity.Value;
+        public static implicit operator Identity(string identity) => From(identity);
+
         protected override void Validate()
         {
             var digitsOnly = new string([.. Value.Where(char.IsDigit)]).Trim();
