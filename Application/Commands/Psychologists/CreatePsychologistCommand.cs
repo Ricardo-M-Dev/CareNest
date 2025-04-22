@@ -19,9 +19,9 @@ namespace Application.Commands.Psychologists
         public string ZipCode { get; set; } = default!;
         public string Country { get; set; } = default!;
         public bool IsActive { get; set; } = default!;
-        public string? CRP { get; set; }
-        public string? Specialization { get; set; }
-        public string? Bio { get; set; }
+        public string CRP { get; set; } = default!;
+        public string Specialization { get; set; } = default!;
+        public string Bio { get; set; } = default!;
         public bool IsAvailable { get; set; }
     }
 }
