@@ -2,6 +2,7 @@
 using Application.Common.Mediator;
 using Application.Interfaces.Repositories;
 using Domain.Entities;
+using Domain.Enum;
 using Domain.ValueObjects;
 
 namespace Application.Commands.Psychologists
@@ -38,6 +39,7 @@ namespace Application.Commands.Psychologists
             Country country = command.Country;
             CRP crp = command.CRP;
             string specialization = command.Specialization;
+            Roles role = command.Role;
             string bio = command.Bio;
             bool isAvailable = command.IsAvailable;
             bool isActive = command.IsActive;
@@ -58,7 +60,7 @@ namespace Application.Commands.Psychologists
                 isActive,
                 crp,
                 specialization,
-                null,
+                role,
                 bio,
                 isAvailable
             );

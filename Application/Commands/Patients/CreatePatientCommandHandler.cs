@@ -1,19 +1,26 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Common.Factory;
+using Application.Common.Interfaces;
 using Application.Common.Mediator;
 using Application.Interfaces.Repositories;
 using Domain.Entities;
+using Domain.Enum;
 using Domain.ValueObjects;
 
 namespace Application.Commands.Patients
 {
     public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand, int>
     {
+        private readonly IPsychologistRepository _psychologistRepository;
         private readonly IPatientRepository _patientRepository;
+        private readonly IPersonFactory _personFactory;
         private readonly IPasswordHasher _passwordHasher;
 
-        public CreatePatientCommandHandler(IPatientRepository patientRepository, IPasswordHasher passwordHasher)
+        public CreatePatientCommandHandler(IPsychologistRepository psychologistRepository, IPatientRepository patientRepository, IPersonFactory personFactory, IPasswordHasher passwordHasher)
         {
+            _psychologistRepository = psychologistRepository;
             _patientRepository = patientRepository;
+            _personFactory = personFactory;
             _passwordHasher = passwordHasher;
         }
 
@@ -36,6 +43,18 @@ namespace Application.Commands.Patients
             State state = command.State;
             ZipCode zipCode = command.ZipCode;
             Country country = command.Country;
+            Roles role = command.Role;
+            int? psychologistId = null;
+
+            if (command.PsychologistId.HasValue && command.Role == Roles.Patient)
+            {
+                var psychologist = await _psychologistRepository.GetByIdAsync(command.PsychologistId.Value);
+
+                if (psychologist == null)
+                    throw new NotFoundException("Psicologo", command.PsychologistId.Value);
+
+                psychologistId = psychologist.Id;
+            }
 
             EmergencyContact? emergencyContact = null;
             if (!string.IsNullOrWhiteSpace(command.EmergencyContactName) &&
@@ -60,11 +79,15 @@ namespace Application.Commands.Patients
                 state,
                 zipCode,
                 country,
+                role,
                 command.IsActive,
+                psychologistId,
                 emergencyContact,
                 insurance,
                 command.IsUnderTreatment
             );
+
+            var person = _personFactory.CreateFrom(command, hashedPassword);
 
             return await _patientRepository.AddAsync(patient);
         }
