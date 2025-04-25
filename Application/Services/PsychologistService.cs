@@ -90,13 +90,13 @@ namespace Application.Services
         {
             try
             {
-                var result = await _uow.Psychologists.DeleteAsync(id);
-                await _uow.CommitAsync();
+                if (await _uow.Psychologists.DeleteAsync(id))
+                {
+                    await _uow.CommitAsync();
+                    return true;
+                }
 
-                if (!result)
-                    return false;
-
-                return true;
+                return false;
             }
             catch (Exception ex)
             {
