@@ -6,6 +6,7 @@ namespace Application.Common.Interfaces
     {
         IPatientRepository Patients { get; }
         IPsychologistRepository Psychologists { get; }
+        IPersonRepository Persons { get; }
         Task CommitAsync();
         Task RollbackAsync();
     }
