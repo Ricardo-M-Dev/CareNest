@@ -1,6 +1,5 @@
 ﻿using Application.Common.Mediator;
-using Domain.Entities;
-using Domain.ValueObjects;
+using Domain.Enum;
 
 namespace Application.Commands.Psychologists
 {
@@ -21,6 +20,7 @@ namespace Application.Commands.Psychologists
         public bool IsActive { get; set; } = default!;
         public string CRP { get; set; } = default!;
         public string Specialization { get; set; } = default!;
+        public Roles Role { get; set; } = default!;
         public string Bio { get; set; } = default!;
         public bool IsAvailable { get; set; }
     }

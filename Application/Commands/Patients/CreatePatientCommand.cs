@@ -1,4 +1,6 @@
 ﻿using Application.Common.Mediator;
+using Domain.Entities;
+using Domain.Enum;
 
 namespace Application.Commands.Patients
 {
@@ -16,7 +18,9 @@ namespace Application.Commands.Patients
         public string State { get; set; } = default!;
         public string ZipCode { get; set; } = default!;
         public string Country { get; set; } = default!;
+        public Roles Role { get; set; } = default!;
         public bool IsActive { get; set; } = default!;
+        public int? PsychologistId { get; set; }
         public string? EmergencyContactName { get; set; }
         public string? EmergencyContactPhone { get; set; }
         public string? InsuranceProvider { get; set; }
