@@ -1,9 +1,11 @@
-﻿using Domain.ValueObjects;
+﻿using Domain.Enum;
+using Domain.ValueObjects;
 
 namespace Domain.Entities
 {
     public class Patient : Person
     {
+        public int? PsychologistId { get; private set; }
         public EmergencyContact? EmergencyContact { get; private set; }
         public Insurance? Insurance { get; private set; }
         public bool IsUnderTreatment { get; private set; }
@@ -23,11 +25,13 @@ namespace Domain.Entities
             State state,
             ZipCode zipCode,
             Country country,
+            Roles role,
             bool isActive,
+            int? psychologistId,
             EmergencyContact? emergencyContact,
             Insurance? insurance,
             bool isUnderTreatment)
-            : base(fullName, email, password, identity, dateOfBirth, gender, phone, address, city, state, zipCode, country, isActive)
+            : base(fullName, email, password, identity, dateOfBirth, gender, phone, address, city, state, zipCode, country, role, isActive)
         {
             EmergencyContact = emergencyContact;
             Insurance = insurance;

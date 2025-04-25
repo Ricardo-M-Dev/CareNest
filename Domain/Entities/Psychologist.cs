@@ -1,4 +1,5 @@
-﻿using Domain.ValueObjects;
+﻿using Domain.Enum;
+using Domain.ValueObjects;
 
 namespace Domain.Entities
 {
@@ -28,14 +29,13 @@ namespace Domain.Entities
             bool isActive,
             CRP crp,
             string specialization,
-            List<Patient>? patients,
+            Roles role,
             string bio,
             bool isAvailable)
-            : base(fullName, email, password, identity, dateOfBirth, gender, phone, address, city, state, zipCode, country, isActive)
+            : base(fullName, email, password, identity, dateOfBirth, gender, phone, address, city, state, zipCode, country, role, isActive)
         {
             CRP = crp;
             Specialization = specialization;
-            Patients = patients;
             Bio = bio;
             IsAvailable = isAvailable;
         }
