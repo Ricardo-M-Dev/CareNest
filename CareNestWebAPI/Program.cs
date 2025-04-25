@@ -1,5 +1,7 @@
 using Application.Commands.Patients;
 using Application.Commands.Psychologists;
+using Application.Common;
+using Application.Common.Factory;
 using Application.Common.Interfaces;
 using Application.Common.Mediator;
 using Application.Interfaces.Repositories;
@@ -31,19 +33,23 @@ builder.Services.AddScoped<IDbConnection>(_ =>
 
 builder.Services.AddScoped<IUnityOfWork, UnityOfWork>();
 
+builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IPsychologistRepository, PsychologistRepository>();
 
+builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IPsychologistService, PsychologistService>();
+
+builder.Services.AddScoped<IPasswordHasher, Pbkdf2PasswordHasher>();
 builder.Services.AddScoped<IRedisCacheService, RedisCacheService>();
+builder.Services.AddScoped<IPersonFactory, PersonFactory>();
 
 builder.Services.AddTransient<IRequestHandler<GetPatientByIdQuery, Patient?>, GetPatientByIdQueryHandler>();
 builder.Services.AddTransient<IRequestHandler<GetAllPatientsQuery, IEnumerable<Patient?>>, GetAllPatientsQueryHandler>();
 
 builder.Services.AddTransient<IRequestHandler<GetPsychologistByIdQuery, Psychologist?>, GetPsychologistByIdQueryHandler>();
 builder.Services.AddTransient<IRequestHandler<GetAllPsychologistsQuery, IEnumerable<Psychologist?>>, GetAllPsychologistsQueryHandler>();
-
 
 builder.Services.AddScoped<Mediator>();
 builder.Services.AddTransient<IRequestHandler<CreatePatientCommand, int>, CreatePatientCommandHandler>();
