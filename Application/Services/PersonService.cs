@@ -26,6 +26,9 @@ namespace Application.Services
         {
             try
             {
+                if (entity == null)
+                    throw new ArgumentNullException(nameof(entity));
+
                 var id = await _uow.Persons.AddAsync(entity);
                 await _uow.CommitAsync();
 
