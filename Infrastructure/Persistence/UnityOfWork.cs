@@ -9,15 +9,16 @@ namespace Infrastructure.Persistence
         private readonly IDbConnection? _connection;
         private readonly IDbTransaction? _transaction;
 
+        public IPersonRepository Persons { get; }
         public IPatientRepository Patients { get; }
-
         public IPsychologistRepository Psychologists { get; }
 
-        public UnityOfWork(IDbConnection connection, IPatientRepository patients, IPsychologistRepository psychologists)
+        public UnityOfWork(IDbConnection connection, IPersonRepository personRepository, IPatientRepository patients, IPsychologistRepository psychologists)
         {
             _connection = connection;
             _transaction = _connection.BeginTransaction();
 
+            Persons = personRepository;
             Patients = patients;
             Psychologists = psychologists;
         }
