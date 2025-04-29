@@ -8,12 +8,10 @@ namespace Infrastructure.Persistence.Repositories
     public class PersonRepository : IPersonRepository
     {
         private readonly IDbConnection _connection;
-        private readonly IDbTransaction _transaction; // A ser usado em caso de integração com outras entidades
 
-        public PersonRepository(IDbConnection connection, IDbTransaction transation)
+        public PersonRepository(IDbConnection connection)
         {
             _connection = connection;
-            _transaction = transation;
         }
 
         public async Task<int> AddAsync(Person entity)

@@ -8,12 +8,10 @@ namespace Application.Repositories
     public class PatientRepository : IPatientRepository
     {
         private readonly IDbConnection _connection;
-        private readonly IDbTransaction _transaction; // A ser usado em caso de integração com outras entidades
 
-        public PatientRepository(IDbConnection connection, IDbTransaction transation)
+        public PatientRepository(IDbConnection connection)
         {
             _connection = connection;
-            _transaction = transation;
         }
 
         public async Task<int> AddAsync(Patient entity)

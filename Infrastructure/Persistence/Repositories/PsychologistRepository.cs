@@ -8,12 +8,10 @@ namespace Infrastructure.Persistence.Repositories
     public class PsychologistRepository : IPsychologistRepository
     {
         private readonly IDbConnection _connection;
-        private readonly IDbTransaction _transaction; // A ser usado em caso de integração com outras entidades
 
-        public PsychologistRepository(IDbConnection connection, IDbTransaction transation)
+        public PsychologistRepository(IDbConnection connection)
         {
             _connection = connection;
-            _transaction = transation;
         }
         public async Task<int> AddAsync(Psychologist entity)
         {
