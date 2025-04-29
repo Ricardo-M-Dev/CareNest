@@ -5,6 +5,7 @@ namespace Domain.Entities
 {
     public class Patient : Person
     {
+        public int PersonId { get; private set; }
         public int? PsychologistId { get; private set; }
         public EmergencyContact? EmergencyContact { get; private set; }
         public Insurance? Insurance { get; private set; }
@@ -13,26 +14,14 @@ namespace Domain.Entities
         public Patient() { }
 
         public Patient(
-            FullName fullName,
-            Email email,
-            Password password,
-            Identity identity,
-            DateOfBirth dateOfBirth,
-            Gender gender,
-            Phone phone,
-            Address address,
-            City city,
-            State state,
-            ZipCode zipCode,
-            Country country,
-            Roles role,
-            bool isActive,
+            int personId,
             int? psychologistId,
             EmergencyContact? emergencyContact,
             Insurance? insurance,
             bool isUnderTreatment)
-            : base(fullName, email, password, identity, dateOfBirth, gender, phone, address, city, state, zipCode, country, role, isActive)
+            : base()
         {
+            PersonId = personId;
             EmergencyContact = emergencyContact;
             Insurance = insurance;
             IsUnderTreatment = isUnderTreatment;

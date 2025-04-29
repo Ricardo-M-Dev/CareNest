@@ -5,6 +5,7 @@ namespace Domain.Entities
 {
     public class Psychologist : Person
     {
+        public int PersonId { get; private set; }
         public CRP? CRP { get; private set; }
         public string? Specialization { get; private set; }
         public List<Patient>? Patients { get; private set; }
@@ -14,26 +15,14 @@ namespace Domain.Entities
         public Psychologist() { }
 
         public Psychologist(
-            FullName fullName,
-            Email email,
-            Password password,
-            Identity identity,
-            DateOfBirth dateOfBirth,
-            Gender gender,
-            Phone phone,
-            Address address,
-            City city,
-            State state,
-            ZipCode zipCode,
-            Country country,
-            bool isActive,
+            int personId,
             CRP crp,
             string specialization,
-            Roles role,
             string bio,
             bool isAvailable)
-            : base(fullName, email, password, identity, dateOfBirth, gender, phone, address, city, state, zipCode, country, role, isActive)
+            : base()
         {
+            PersonId = personId;
             CRP = crp;
             Specialization = specialization;
             Bio = bio;
