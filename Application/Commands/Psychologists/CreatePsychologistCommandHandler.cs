@@ -1,21 +1,27 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Common.Factory;
+using Application.Common.Interfaces;
 using Application.Common.Mediator;
-using Application.Interfaces.Repositories;
+using Application.Interfaces.Services;
 using Domain.Entities;
-using Domain.Enum;
 using Domain.ValueObjects;
 
 namespace Application.Commands.Psychologists
 {
     public class CreatePsychologistCommandHandler : IRequestHandler<CreatePsychologistCommand, int>
     {
-        private readonly IPsychologistRepository _psychologistRepository;
+        private readonly IPsychologistService _psychologistService;
+        private readonly IPersonService _personService;
         private readonly IPasswordHasher _passwordHasher;
+        private readonly IPersonFactory _personFactory;
 
-        public CreatePsychologistCommandHandler(IPsychologistRepository psychologistRepository, IPasswordHasher passwordHasher)
+
+        public CreatePsychologistCommandHandler(IPsychologistService psychologistService, IPersonService personService, IPasswordHasher passwordHasher, IPersonFactory personFactory)
         {
-            _psychologistRepository = psychologistRepository;
+            _psychologistService = psychologistService;
+            _personService = personService;
             _passwordHasher = passwordHasher;
+            _personFactory = personFactory;
         }
 
         public async Task<int> Handle(CreatePsychologistCommand command)
@@ -24,48 +30,31 @@ namespace Application.Commands.Psychologists
                 throw new ArgumentNullException(nameof(command));
 
             var hashedPassword = _passwordHasher.Hash(command.Password);
+            
+            var person = _personFactory.CreateFrom(command, hashedPassword);
 
-            FullName fullName = command.FullName;
-            Email email = command.Email;
-            Password password = hashedPassword;
-            Identity identity = command.Identity;
-            DateOfBirth dateOfBirth = command.DateOfBirth;
-            Gender gender = command.Gender;
-            Phone phone = command.Phone;
-            Address address = command.Address;
-            City city = command.City;
-            State state = command.State;
-            ZipCode zipCode = command.ZipCode;
-            Country country = command.Country;
+            if (person == null)
+                throw new BadRequestException("Não foi possível mapear a entidade Pessoa.");
+
+            int personId = await _personService.SavePersonAsync(person);
+
+            if (personId == 0)
+                throw new BadRequestException("Não foi possível salvar a entidade Pessoa.");
+
             CRP crp = command.CRP;
             string specialization = command.Specialization;
-            Roles role = command.Role;
             string bio = command.Bio;
             bool isAvailable = command.IsAvailable;
-            bool isActive = command.IsActive;
 
             var psychologist = new Psychologist(
-                fullName,
-                email,
-                password,
-                identity,
-                dateOfBirth,
-                gender,
-                phone,
-                address,
-                city,
-                state,
-                zipCode,
-                country,
-                isActive,
+                personId,
                 crp,
                 specialization,
-                role,
                 bio,
                 isAvailable
             );
 
-            return await _psychologistRepository.AddAsync(psychologist);
+            return await _psychologistService.SavePsychologistAsync(psychologist);
         }
     }
 }

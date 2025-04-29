@@ -3,6 +3,7 @@ using Application.Common.Factory;
 using Application.Common.Interfaces;
 using Application.Common.Mediator;
 using Application.Interfaces.Repositories;
+using Application.Interfaces.Services;
 using Domain.Entities;
 using Domain.Enum;
 using Domain.ValueObjects;
@@ -12,13 +13,15 @@ namespace Application.Commands.Patients
     public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand, int>
     {
         private readonly IPsychologistRepository _psychologistRepository;
+        private readonly IPersonService _personService;
         private readonly IPatientRepository _patientRepository;
         private readonly IPersonFactory _personFactory;
         private readonly IPasswordHasher _passwordHasher;
 
-        public CreatePatientCommandHandler(IPsychologistRepository psychologistRepository, IPatientRepository patientRepository, IPersonFactory personFactory, IPasswordHasher passwordHasher)
+        public CreatePatientCommandHandler(IPsychologistRepository psychologistRepository, IPersonService personService, IPatientRepository patientRepository, IPersonFactory personFactory, IPasswordHasher passwordHasher)
         {
             _psychologistRepository = psychologistRepository;
+            _personService = personService;
             _patientRepository = patientRepository;
             _personFactory = personFactory;
             _passwordHasher = passwordHasher;
@@ -31,20 +34,18 @@ namespace Application.Commands.Patients
 
             var hashedPassword = _passwordHasher.Hash(command.Password);
 
-            FullName fullName = command.FullName;
-            Email email = command.Email;
-            Password password = hashedPassword;
-            Identity identity = command.Identity;
-            DateOfBirth dob = command.DateOfBirth;
-            Gender gender = command.Gender;
-            Phone phone = command.Phone;
-            Address address = command.Address;
-            City city = command.City;
-            State state = command.State;
-            ZipCode zipCode = command.ZipCode;
-            Country country = command.Country;
-            Roles role = command.Role;
+            var person = _personFactory.CreateFrom(command, hashedPassword);
+
+            if (person == null)
+                throw new BadRequestException("Não foi possível mapear a entidade Pessoa.");
+
+            int personId = await _personService.SavePersonAsync(person);
+
+            if (personId == 0)
+                throw new BadRequestException("Não foi possível salvar a entidade Pessoa.");
+
             int? psychologistId = null;
+            bool isUnderTreatment = command.IsUnderTreatment;
 
             if (command.PsychologistId.HasValue && command.Role == Roles.Patient)
             {
@@ -54,6 +55,7 @@ namespace Application.Commands.Patients
                     throw new NotFoundException("Psicologo", command.PsychologistId.Value);
 
                 psychologistId = psychologist.Id;
+                isUnderTreatment = true;
             }
 
             EmergencyContact? emergencyContact = null;
@@ -67,27 +69,12 @@ namespace Application.Commands.Patients
                 insurance = (command.InsuranceProvider, command.InsuranceNumber);
 
             var patient = new Patient(
-                fullName,
-                email,
-                password,
-                identity,
-                dob,
-                gender,
-                phone,
-                address,
-                city,
-                state,
-                zipCode,
-                country,
-                role,
-                command.IsActive,
+                personId,
                 psychologistId,
                 emergencyContact,
                 insurance,
-                command.IsUnderTreatment
+                isUnderTreatment
             );
-
-            var person = _personFactory.CreateFrom(command, hashedPassword);
 
             return await _patientRepository.AddAsync(patient);
         }
